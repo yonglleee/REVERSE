@@ -1,0 +1,99 @@
+tools:
+  - class_name: "verl.tools.image_zoom_in_tool.ImageZoomInTool"
+    config:
+      type: native
+      num_workers: 1
+      rate_limit: 30
+      timeout: 30
+      enable_global_rate_limit: false
+    tool_schema:
+      type: "function"
+      function:
+        name: "image_zoom_in_tool"
+        description: >
+          Zoom in on a specific region of an image by cropping it based on a bounding box (bbox) and an optional object label.
+          Use this to examine details more closely before making a geolocation prediction.
+        parameters:
+          type: "object"
+          properties:
+            bbox_2d:
+              type: "array"
+              items:
+                type: "number"
+              minItems: 4
+              maxItems: 4
+              description: >
+                The bounding box of the region to zoom in, as [x1, y1, x2, y2],
+                where (x1, y1) is the top-left corner and (x2, y2) is the bottom-right corner.
+                Values are normalized coordinates in the range [0, 1000] relative to the current image.
+            label:
+              type: "string"
+              description: "The name or label of the object in the bounding box (optional)."
+          required: ["bbox_2d"]
+
+  - class_name: "verl.tools.image_search_tool.ImageSearchTool"
+    config:
+      type: native
+      cache_path: "/mnt/sh/mmvision/home/jonahli/data_agent/REVERSE/rl_cache/image_search_cache.parquet"
+      iou_threshold: 0.7
+      enable_negmix: true        # 方案C：本组负样本+归一化reward
+      n_pos_limit: 3             # 每次最多返回3条正样本
+      base_call_reward: 0.1      # IOU命中保底奖励，F1加成额外+0.3
+      reward_per_pos: 0.3        # pos_recall × 0.3（全部正样本命中最高+0.3）
+      discrimination_penalty: 0.05  # 每个误标neg为useful扣0.05
+      max_results: 10
+    tool_schema:
+      type: "function"
+      function:
+        name: "image_search_tool"
+        description: >
+          Search the internet using a cropped region of the image as a query.
+          Use this after zooming in on a region of interest (e.g. signs, landmarks, storefronts)
+          to find matching web pages that may reveal the location.
+        parameters:
+          type: "object"
+          properties:
+            bbox_2d:
+              type: "array"
+              items:
+                type: "number"
+              minItems: 4
+              maxItems: 4
+              description: >
+                The bounding box of the region to search with, as [x1, y1, x2, y2],
+                where (x1, y1) is the top-left corner and (x2, y2) is the bottom-right corner.
+                Values are normalized coordinates in the range [0, 1000] relative to the original image.
+                Use the same bbox as image_zoom_in_tool to search the zoomed region.
+          required: ["bbox_2d"]
+
+  - class_name: "verl.tools.text_search_tool.TextSearchTool"
+    config:
+      type: native
+      # Merged cache: text_search results from coldstart annotations (Kimi K2d6).
+      # v2: enable negmix + pos_recall reward (is_geo_useful labels now available, 20.6% True).
+      # Query similarity matching (Jaccard) selects most relevant cached call.
+      cache_path: "/mnt/sh/mmvision/home/jonahli/data_agent/REVERSE/rl_cache/text_search_cache.parquet"
+      enable_negmix: true
+      n_pos_limit: 3
+      base_call_reward: 0.1
+      reward_per_pos: 0.2
+      no_cache_reward: 0.0
+      max_results: 10
+    tool_schema:
+      type: "function"
+      function:
+        name: "text_search_tool"
+        description: >
+          Search the web using natural language queries.
+          Use this to look up landmark names, visible text/signs, or any location clues
+          found from image search or zoom results. Provide 1-3 targeted queries for best results.
+        parameters:
+          type: "object"
+          properties:
+            query:
+              type: "string"
+              description: >
+                Natural language search query.
+                Use targeted, specific queries for best results
+                (e.g. "Drumochter Pass Scotland coordinates", "Koutoubia Mosque Marrakech location").
+          required: ["query"]
