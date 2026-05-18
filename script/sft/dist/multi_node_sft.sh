@@ -50,8 +50,6 @@ export PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:8192
 export DISABLE_VERSION_CHECK=1
 
 # ── Proxy ─────────────────────────────────────────────────────────────────────
-export http_proxy=http://REMOVED_PROXY
-export https_proxy=http://REMOVED_PROXY
 export no_proxy=localhost,127.0.0.1,${MASTER_ADDR}
 export NO_PROXY=localhost,127.0.0.1,${MASTER_ADDR}
 

@@ -10,8 +10,6 @@
 #   bash run_qwen3vl-4b_geoloc_coldstart_rlv2_8gpu.sh
 # =============================================================================
 
-export http_proxy=http://REMOVED_PROXY
-export https_proxy=http://REMOVED_PROXY
 export no_proxy=localhost,127.0.0.1
 export NO_PROXY=localhost,127.0.0.1
 export SGLANG_IMAGE_MAX_PIXELS=2097152

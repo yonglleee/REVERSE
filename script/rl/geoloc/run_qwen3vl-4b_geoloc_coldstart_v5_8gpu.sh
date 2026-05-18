@@ -20,8 +20,6 @@
 #   MODEL_PATH — path to SFT coldstart checkpoint (huggingface format)
 # =============================================================================
 
-export http_proxy=http://REMOVED_PROXY
-export https_proxy=http://REMOVED_PROXY
 export no_proxy=localhost,127.0.0.1
 export NO_PROXY=localhost,127.0.0.1
 export SGLANG_IMAGE_MAX_PIXELS=2097152

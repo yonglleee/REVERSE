@@ -28,7 +28,6 @@ set -e
 
 
 # ── Environment ───────────────────────────────────────────────────────────────
-export https_proxy=http://REMOVED_PROXY
 export no_proxy=localhost,127.0.0.1
 export NO_PROXY=localhost,127.0.0.1
 export WANDB_API_KEY=${WANDB_API_KEY:-"your_wandb_api_key"}

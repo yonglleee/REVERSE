@@ -17,8 +17,6 @@
 # CURRICULUM:   easy (3104 rows, clean) | full (6996 rows, clean) | easy_raw | full_raw
 # =============================================================================
 
-export http_proxy=http://REMOVED_PROXY
-export https_proxy=http://REMOVED_PROXY
 export no_proxy=localhost,127.0.0.1
 export NO_PROXY=localhost,127.0.0.1
 export SGLANG_IMAGE_MAX_PIXELS=2097152

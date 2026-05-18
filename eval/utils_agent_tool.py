@@ -465,8 +465,6 @@ def _get_proxies() -> dict:
              or os.environ.get("https_proxy") or os.environ.get("http_proxy"))
     if proxy:
         return {"https": proxy, "http": proxy}
-    return {"https": "http://REMOVED_PROXY",
-            "http":  "http://REMOVED_PROXY"}
 
 def _get_direct_proxies() -> dict:
     """For COS / Oxylabs: use hk proxy which allows myqcloud.com access."""
@@ -476,8 +474,6 @@ def _get_direct_proxies() -> dict:
              or os.environ.get("https_proxy") or os.environ.get("http_proxy"))
     if proxy:
         return {"https": proxy, "http": proxy}
-    return {"https": "http://REMOVED_PROXY",
-            "http":  "http://REMOVED_PROXY"}
 
 # ── Tool call parsing ──────────────────────────────────────────────────────────
 _STRICT_RE = re.compile(r"<tool_call>\s*(\{[\s\S]*?\})\s*</tool_call>", re.MULTILINE)

@@ -33,8 +33,6 @@ export NCCL_TIMEOUT_MINS=30
 export PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:8192
 export DISABLE_VERSION_CHECK=1
 
-export http_proxy=http://REMOVED_PROXY
-export https_proxy=http://REMOVED_PROXY
 export no_proxy=localhost,127.0.0.1,${MASTER_IP}
 
 pip config set global.index-url https://mirrors.tencent.com/pypi/simple
