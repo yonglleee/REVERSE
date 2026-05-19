@@ -101,10 +101,13 @@ def extract_gps(img_path):
 
 def restapi_reverse_geocode(longitude: float, latitude: float):
     """调用高德地图反向地理编码 API，返回可读地址字符串或 None。"""
+    amap_key = os.environ.get('AMAP_API_KEY')
+    if not amap_key:
+        raise ValueError('AMAP_API_KEY 环境变量未设置')
     url = (
         f'https://restapi.amap.com/v3/geocode/regeo?output=xml'
         f'&location={longitude},{latitude}'
-        f'&key=REDACTED_AMAP_KEY&radius=50&extensions=base'
+        f'&key={amap_key}&radius=50&extensions=base'
     )
 
     response = requests.get(url)
@@ -173,12 +176,13 @@ def upload_image_to_gcs(local_path: str, destination_blob_name=None) -> str:
 
 # ── SerpAPI 搜索 ─────────────────────────────────────────────────────────────
 
-_SEARCH_API_KEY = 'REDACTED_SERPER_KEY'  # list
-# _SEARCH_API_KEY = 'REDACTED_SERPER_KEY' # list
+_SEARCH_API_KEY = os.environ.get('SERPER_API_KEY')
 
 
 def serper_search_img(image_url: str) -> list:
     """根据图片 URL 调用 Google Lens 反向图搜，返回 visual_matches 列表。"""
+    if not _SEARCH_API_KEY:
+        raise ValueError('SERPER_API_KEY 环境变量未设置')
     params = {
         "engine": "google_lens",
         "url": image_url,
@@ -233,6 +237,11 @@ def serper_search_text(keywords) -> list:
 
 def oxylabs_reverse_image_search_img(image_url: str) -> list:
     """根据图片 URL 调用 Oxylabs API，返回 visual_matches 列表。"""
+    oxylabs_user = os.environ.get('OXYLABS_USER')
+    oxylabs_pass = os.environ.get('OXYLABS_PASSWORD')
+    if not (oxylabs_user and oxylabs_pass):
+        raise ValueError('OXYLABS_USER 或 OXYLABS_PASSWORD 环境变量未设置')
+
     payload = {
     'source': 'google_lens',
     'query': image_url,
@@ -243,7 +252,7 @@ def oxylabs_reverse_image_search_img(image_url: str) -> list:
     response = requests.request(
     'POST',
     'https://realtime.oxylabs.io/v1/queries',
-    auth=('REDACTED_OXYLABS_USER', 'REDACTED_OXYLABS_PASS'),
+    auth=(oxylabs_user, oxylabs_pass),
     json=payload,
     proxies=_OXYLABS_PROXIES,
 )
@@ -265,6 +274,11 @@ def oxylabs_reverse_image_search_img(image_url: str) -> list:
 
 def oxylabs_search_text_organic(keywords) -> list:
 
+    oxylabs_user = os.environ.get('OXYLABS_USER')
+    oxylabs_pass = os.environ.get('OXYLABS_PASSWORD')
+    if not (oxylabs_user and oxylabs_pass):
+        raise ValueError('OXYLABS_USER 或 OXYLABS_PASSWORD 环境变量未设置')
+
     # general google text search
     payload = {
     'source': 'google_search',
@@ -276,7 +290,7 @@ def oxylabs_search_text_organic(keywords) -> list:
     response = requests.request(
     'POST',
     'https://realtime.oxylabs.io/v1/queries',
-    auth=('REDACTED_OXYLABS_USER', 'REDACTED_OXYLABS_PASS'),
+    auth=(oxylabs_user, oxylabs_pass),
     json=payload,
     proxies=_OXYLABS_PROXIES,
 )
@@ -328,6 +342,11 @@ def oxylabs_search_text_organic(keywords) -> list:
 def oxylabs_search_text_img(keyword):
     """根据关键词调用 google 图搜 API，返回 google 检索图片 Top 15 的图片+title列表。"""
 
+    oxylabs_user = os.environ.get('OXYLABS_USER')
+    oxylabs_pass = os.environ.get('OXYLABS_PASSWORD')
+    if not (oxylabs_user and oxylabs_pass):
+        raise ValueError('OXYLABS_USER 或 OXYLABS_PASSWORD 环境变量未设置')
+
     payload = {
         'source': 'google_search',
         'query': keyword,
@@ -341,7 +360,7 @@ def oxylabs_search_text_img(keyword):
 
     response = requests.post(
         'https://realtime.oxylabs.io/v1/queries',
-        auth=('REDACTED_OXYLABS_USER', 'REDACTED_OXYLABS_PASS'),
+        auth=(oxylabs_user, oxylabs_pass),
         json=payload,
         proxies=_OXYLABS_PROXIES,
     )
@@ -365,6 +384,11 @@ def oxylabs_search_text_img(keyword):
     return text_img_top15_formated
 
 def oxylabs_fetch_html(url):
+    oxylabs_user = os.environ.get('OXYLABS_USER')
+    oxylabs_pass = os.environ.get('OXYLABS_PASSWORD')
+    if not (oxylabs_user and oxylabs_pass):
+        raise ValueError('OXYLABS_USER 或 OXYLABS_PASSWORD 环境变量未设置')
+
     payload = {
     'source': 'universal',
     'url': url,
@@ -375,7 +399,7 @@ def oxylabs_fetch_html(url):
     response = requests.request(
         'POST',
         'https://realtime.oxylabs.io/v1/queries',
-        auth=('REDACTED_OXYLABS_USER', 'REDACTED_OXYLABS_PASS'),
+        auth=(oxylabs_user, oxylabs_pass),
         json=payload,
         proxies=_OXYLABS_PROXIES,
     )
