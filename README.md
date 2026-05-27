@@ -1,11 +1,13 @@
 # REVERSE
 
-**REVERSE** (**R**einforcing **E**vidence **Ver**ification and **Se**arch for Agentic Image Geolocation) is a framework for training vision-language models to geolocate images using multi-turn tool-augmented reasoning.
+[Paper Link (arXiv:2605.26861)](https://arxiv.org/abs/2605.26861)
+
+**REVERSE** (**R**einforcing **E**vidence **Ver**ification and **Se**arch for Agentic Image Geolocation) is a framework for training vision-language models to geolocate images using multi-turn tool-au[...]
 
 The model learns to iteratively zoom into image regions, search with image crops, and query text search engines — then synthesizes evidence to predict GPS coordinates.
 
 ![Overview](figures/title-image-v1.png)
-*(A) Agentic geo-localization fails when a model crops the wrong region and follows misleading results, or retrieves the right candidate but cannot filter distractors. (B) REVERSE fixes both: spatial supervision grounds region selection, evidence labels annotate search results, and process rewards train the model via agentic RL.*
+*(A) Agentic geo-localization fails when a model crops the wrong region and follows misleading results, or retrieves the right candidate but cannot filter distractors. (B) REVERSE fixes both: spatial [...]
 
 ---
 
@@ -127,7 +129,7 @@ python eval_benchmark.py \
 ```
 
 ![Case Study](figures/case-result-v1.png)
-*Comparison of two agent trajectories on the same case. Qwen3-VL-4B-Instruct retrieves strong evidence but rejects it and follows a distractor. REVERSE correctly identifies the sculpture and predicts New York City.*
+*Comparison of two agent trajectories on the same case. Qwen3-VL-4B-Instruct retrieves strong evidence but rejects it and follows a distractor. REVERSE correctly identifies the sculpture and predicts [...]
 
 ---
 
@@ -149,4 +151,14 @@ python eval_benchmark.py \
 
 ## Citation
 
-TODO
+If you find our work useful, please cite:
+
+```bibtex
+@misc{li2026reverse,
+  title   = {REVERSE: Reinforcing Evidence Verification and Search for Agentic Image geo-localization},
+  author  = {Yong Li and Furong Jia and Dacheng Yin and Kang Rong and Fengyun Rao and Jing Lyu and Fan Zhang},
+  year    = {2026},
+  archivePrefix = {arXiv},
+  eprint  = {2605.26861}
+}
+```
