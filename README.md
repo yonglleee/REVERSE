@@ -1,8 +1,6 @@
-# REVERSE
+# REVERSE** (**R**einforcing **E**vidence **Ver**ification and **Se**arch for Agentic Image Geolocation)
 
 [Paper Link (arXiv:2605.26861)](https://arxiv.org/abs/2605.26861)
-
-**REVERSE** (**R**einforcing **E**vidence **Ver**ification and **Se**arch for Agentic Image Geolocation) is a framework for training vision-language models to geolocate images using multi-turn tool-au[...]
 
 The model learns to iteratively zoom into image regions, search with image crops, and query text search engines — then synthesizes evidence to predict GPS coordinates.
 
